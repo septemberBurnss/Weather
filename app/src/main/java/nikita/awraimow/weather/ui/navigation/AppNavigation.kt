@@ -5,6 +5,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import nikita.awraimow.weather.ui.ForecastDetailsScreen
 import nikita.awraimow.weather.ui.ForecastScreen
 import nikita.awraimow.weather.ui.LocationsScreen
 
@@ -18,6 +19,9 @@ fun AppNavigation() {
         }
         composable(route = Destination.Forecast.route) {
             ForecastScreen(navController)
+        }
+        composable(route = Destination.ForecastDetails.route) {
+            ForecastDetailsScreen(navController)
         }
     }
 }
