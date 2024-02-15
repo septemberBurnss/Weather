@@ -1,4 +1,4 @@
-package nikita.awraimow.weather.ui.locations
+package nikita.awraimow.weather.data.locations
 
 data class LocationResponseModel(
     val name: String,

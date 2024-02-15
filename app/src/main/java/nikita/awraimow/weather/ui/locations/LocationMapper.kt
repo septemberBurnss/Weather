@@ -1,5 +1,6 @@
 package nikita.awraimow.weather.ui.locations
 
+import nikita.awraimow.weather.data.locations.LocationResponseModel
 import javax.inject.Inject
 
 class LocationMapper @Inject constructor() {

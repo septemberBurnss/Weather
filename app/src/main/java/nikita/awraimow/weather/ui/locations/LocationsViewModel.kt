@@ -6,6 +6,7 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
+import nikita.awraimow.weather.GetLocationUseCase
 import nikita.awraimow.weather.data.LocationsRepository
 import javax.inject.Inject
 
