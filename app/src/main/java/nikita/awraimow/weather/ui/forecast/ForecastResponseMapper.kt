@@ -5,6 +5,7 @@ import java.util.Calendar
 import java.util.Date
 import javax.inject.Inject
 import javax.inject.Singleton
+import kotlin.math.roundToInt
 
 @Singleton
 class ForecastResponseMapper @Inject constructor(
@@ -15,11 +16,26 @@ class ForecastResponseMapper @Inject constructor(
         val title = model.city.name
         val days = model.list.map { dayResponse ->
             calendar.time = Date(dayResponse.dt * 1000) // epoch
+            val dayName = getWeekDay(calendar.get(Calendar.DAY_OF_WEEK))
+
+            calendar.time = Date(dayResponse.sunrise * 1000)
+            val sunrise = "${calendar.get(Calendar.HOUR_OF_DAY)}:${calendar.get(Calendar.MINUTE)}"
+            calendar.time = Date(dayResponse.sunset * 1000)
+            val sunset = "${calendar.get(Calendar.HOUR_OF_DAY)}:${calendar.get(Calendar.MINUTE)}"
+
             DayForecastUiModel(
-                dayName = getWeekDay(calendar.get(Calendar.DAY_OF_WEEK)),
+                date = dayResponse.dt,
+                dayName = dayName,
                 weatherType = 0, // TODO
+                temperature = dayResponse.temp.day.roundToInt(),
                 minTemperature = dayResponse.temp.min.toInt(),
                 maxTemperature = dayResponse.temp.max.toInt(),
+                feelsLike = dayResponse.feels_like.day.roundToInt(),
+                humidity = dayResponse.humidity,
+                pressure = dayResponse.pressure,
+                windSpeed = dayResponse.speed.toString(),
+                sunrise = sunrise,
+                sunset = sunset
             )
         }
         return ForecastUiModel(title, days)

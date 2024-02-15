@@ -15,7 +15,11 @@ data class DailyForecastResponseModel(
     val sunrise: Long,
     val sunset: Long,
     val temp: TemperatureResponseModel,
-    val weather: List<WeatherTypeResponseModel>
+    val feels_like: FeelsLikeResponseModel,
+    val weather: List<WeatherTypeResponseModel>,
+    val pressure: Int,
+    val humidity: Int,
+    val speed: Double
 )
 
 data class TemperatureResponseModel(
@@ -23,6 +27,13 @@ data class TemperatureResponseModel(
     val night: Double,
     val min: Double,
     val max: Double,
+    val eve: Double,
+    val morn: Double
+)
+
+data class FeelsLikeResponseModel(
+    val day: Double,
+    val night: Double,
     val eve: Double,
     val morn: Double
 )

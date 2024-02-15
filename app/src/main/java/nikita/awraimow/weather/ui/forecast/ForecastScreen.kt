@@ -20,6 +20,8 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import nikita.awraimow.weather.R
+import nikita.awraimow.weather.ui.navigation.Destination
+import nikita.awraimow.weather.ui.navigation.withParam
 
 @Composable
 fun ForecastScreen(
@@ -38,7 +40,9 @@ fun ForecastScreen(
                     .padding(16.dp)
             )
             for (item in state.forecast.days) {
-                DailyForecastItem(item = item) { }
+                DailyForecastItem(item = item) {
+                    navController.navigate(Destination.ForecastDetails.withParam(item.date))
+                }
             }
         }
     }

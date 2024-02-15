@@ -6,8 +6,16 @@ data class ForecastUiModel(
 )
 
 data class DayForecastUiModel(
+    val date: Long,
     val dayName: String,
     val weatherType: Int,
+    val temperature: Int,
     val minTemperature: Int,
-    val maxTemperature: Int
+    val maxTemperature: Int,
+    val feelsLike: Int,
+    val humidity: Int,
+    val pressure: Int,
+    val windSpeed: String,
+    val sunrise: String,
+    val sunset: String
 )
