@@ -7,7 +7,6 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -22,6 +21,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import coil.compose.AsyncImage
 import nikita.awraimow.weather.R
 import nikita.awraimow.weather.ui.forecast.DayForecastUiModel
 import nikita.awraimow.weather.ui.theme.WeatherTheme
@@ -50,7 +50,10 @@ fun DetailedForecastScreen(
 
 @Composable
 fun Loaded(forecast: DayForecastUiModel) {
-    Column {
+    Column(
+        modifier = Modifier.fillMaxWidth(),
+        horizontalAlignment = Alignment.CenterHorizontally
+    ) {
         Text(
             textAlign = TextAlign.Center,
             text = forecast.title,
@@ -66,29 +69,18 @@ fun Loaded(forecast: DayForecastUiModel) {
             modifier = Modifier
                 .fillMaxWidth()
         )
-        Row(
+
+        AsyncImage(
+            model = forecast.weatherIconUrl,
+            contentDescription = null,
             modifier = Modifier
-                .fillMaxWidth()
-                .padding(top = 64.dp, start = 16.dp, end = 16.dp)
-        ) {
-            Column(
-                modifier = Modifier.weight(0.5f),
-                horizontalAlignment = Alignment.CenterHorizontally
-            ) {
-                Text(
-                    text = "${forecast.temperature}°C",
-                    style = TextStyle(fontSize = 32.sp)
-                )
-                Text(text = "Feels like ${forecast.feelsLike}°C")
-            }
-            Image(
-                painter = painterResource(id = R.drawable.ic_weather_stub),
-                contentDescription = null,
-                modifier = Modifier
-                    .weight(0.5f)
-                    .size(64.dp)
-            )
-        }
+                .padding(top = 32.dp, start = 16.dp, end = 16.dp)
+        )
+        Text(
+            text = "${forecast.temperature}°C",
+            style = TextStyle(fontSize = 32.sp)
+        )
+        Text(text = "Feels like ${forecast.feelsLike}°C")
 
         OtherMeasurements(forecast)
 

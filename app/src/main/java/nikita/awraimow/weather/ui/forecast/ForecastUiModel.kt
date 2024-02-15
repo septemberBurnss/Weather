@@ -10,7 +10,7 @@ data class DayForecastUiModel(
     val date: Long,
     val dayName: String,
     val dateSuffix: String,
-    val weatherType: Int,
+    val weatherIconUrl: String,
     val temperature: Int,
     val minTemperature: Int,
     val maxTemperature: Int,

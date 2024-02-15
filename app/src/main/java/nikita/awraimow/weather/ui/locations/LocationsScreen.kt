@@ -34,15 +34,15 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.withContext
 import nikita.awraimow.weather.ui.theme.WeatherTheme
 
 @Composable
 fun LocationsScreen(
     navController: NavController, viewModel: LocationsViewModel
 ) {
-    LaunchedEffect(Unit) {
-        viewModel.loadSavedLocations()
-    }
+    viewModel.loadSavedLocations()
     val screenState = viewModel.uiState.collectAsState().value
     WeatherTheme {
         when {

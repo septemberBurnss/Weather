@@ -24,6 +24,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
+import coil.compose.AsyncImage
 import nikita.awraimow.weather.R
 import nikita.awraimow.weather.ui.navigation.Destination
 import nikita.awraimow.weather.ui.navigation.withParam
@@ -95,11 +96,11 @@ fun DailyForecastItem(item: DayForecastUiModel, onDaySelected: () -> Unit) {
             text = item.dayName,
             modifier = Modifier.weight(0.3f)
         )
-        Image(
-            painter = painterResource(id = R.drawable.ic_weather_stub),
+        AsyncImage(
+            model = item.weatherIconUrl,
             contentDescription = null,
             modifier = Modifier
-                .size(16.dp)
+                .size(32.dp)
                 .weight(0.4f)
         )
         Text(

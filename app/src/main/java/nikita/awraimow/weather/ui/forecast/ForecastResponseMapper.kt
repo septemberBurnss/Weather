@@ -31,7 +31,7 @@ class ForecastResponseMapper @Inject constructor(
                 date = dayResponse.dt,
                 dayName = dayName,
                 dateSuffix = "$monthSuffix $daySuffix",
-                weatherType = 0, // TODO
+                weatherIconUrl = "$ICON_BASE_URL${dayResponse.weather.first().icon}@4x.png",
                 temperature = dayResponse.temp.day.roundToInt(),
                 minTemperature = dayResponse.temp.min.toInt(),
                 maxTemperature = dayResponse.temp.max.toInt(),
@@ -57,5 +57,9 @@ class ForecastResponseMapper @Inject constructor(
             Calendar.SATURDAY -> "Saturday"
             else -> throw Exception("Invalid input")
         }
+    }
+
+    private companion object {
+        private const val ICON_BASE_URL = "https://openweathermap.org/img/wn/"
     }
 }
