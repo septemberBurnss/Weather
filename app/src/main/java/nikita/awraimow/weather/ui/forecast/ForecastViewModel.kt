@@ -16,9 +16,12 @@ class ForecastViewModel @Inject constructor(
     private val _uiState = MutableStateFlow<ForecastScreenState>(ForecastScreenState.Loading)
     val uiState = _uiState.asStateFlow()
 
-    fun getForecast() {
+    fun getForecast(
+        latitude: Double,
+        longitude: Double
+    ) {
         viewModelScope.launch {
-            val forecast = getForecastUseCase.getForecast()
+            val forecast = getForecastUseCase.getForecast(latitude, longitude)
             _uiState.value = ForecastScreenState.Loaded(forecast)
         }
     }

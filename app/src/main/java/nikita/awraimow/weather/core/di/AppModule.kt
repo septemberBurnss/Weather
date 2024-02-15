@@ -4,6 +4,7 @@ import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
+import nikita.awraimow.weather.data.network.GeoService
 import nikita.awraimow.weather.data.network.WeatherService
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
@@ -33,5 +34,15 @@ class AppModule {
     @Singleton
     fun provideWeatherService(retrofit: Retrofit): WeatherService {
         return retrofit.create(WeatherService::class.java)
+    }
+
+    @Provides
+    @Singleton
+    fun provideGeoService(): GeoService {
+        val retrofit = Retrofit.Builder()
+            .baseUrl("https://api.openweathermap.org/geo/1.0/")
+            .addConverterFactory(GsonConverterFactory.create())
+            .build()
+        return retrofit.create(GeoService::class.java)
     }
 }

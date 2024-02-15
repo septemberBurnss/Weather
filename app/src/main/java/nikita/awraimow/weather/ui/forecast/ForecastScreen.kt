@@ -26,7 +26,9 @@ import nikita.awraimow.weather.ui.navigation.withParam
 @Composable
 fun ForecastScreen(
     navController: NavController,
-    viewModel: ForecastViewModel
+    viewModel: ForecastViewModel,
+    latitude: Double,
+    longitude: Double
 ) {
     val state = viewModel.uiState.collectAsState().value
     Column {
@@ -46,7 +48,7 @@ fun ForecastScreen(
             }
         }
     }
-    viewModel.getForecast()
+    viewModel.getForecast(latitude, longitude)
 }
 
 @Composable
