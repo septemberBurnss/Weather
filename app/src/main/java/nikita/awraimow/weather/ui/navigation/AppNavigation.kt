@@ -6,7 +6,7 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import nikita.awraimow.weather.ui.ForecastDetailsScreen
-import nikita.awraimow.weather.ui.ForecastScreen
+import nikita.awraimow.weather.ui.forecast.ForecastScreen
 import nikita.awraimow.weather.ui.LocationsScreen
 
 @Composable
@@ -18,7 +18,7 @@ fun AppNavigation() {
             LocationsScreen(navController, hiltViewModel())
         }
         composable(route = Destination.Forecast.route) {
-            ForecastScreen(navController)
+            ForecastScreen(navController, hiltViewModel())
         }
         composable(route = Destination.ForecastDetails.route) {
             ForecastDetailsScreen(navController)
