@@ -52,9 +52,7 @@ fun ForecastScreen(
             }
 
             state is ForecastScreenState.Loaded -> {
-                Loaded(state = state) {
-                    navController.navigate(Destination.ForecastDetails.withParam(it))
-                }
+                Loaded(state = state, navController::navigate)
             }
         }
     }
@@ -63,7 +61,7 @@ fun ForecastScreen(
 @Composable
 fun Loaded(
     state: ForecastScreenState.Loaded,
-    onDaySelected: (Long) -> Unit
+    onDaySelected: (String) -> Unit
 ) {
     Column {
         Text(
@@ -76,7 +74,9 @@ fun Loaded(
         )
         for (item in state.forecast.days) {
             DailyForecastItem(item = item) {
-                onDaySelected(item.date)
+                onDaySelected(
+                    Destination.ForecastDetails.withParam(item.date)
+                )
             }
         }
     }

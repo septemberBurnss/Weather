@@ -19,7 +19,6 @@ import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -34,8 +33,8 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.withContext
+import nikita.awraimow.weather.ui.navigation.Destination
+import nikita.awraimow.weather.ui.navigation.withParams
 import nikita.awraimow.weather.ui.theme.WeatherTheme
 
 @Composable
@@ -81,10 +80,10 @@ fun LocationsScreen(
                 }
             }
             screenState is LocationsScreenState.Loaded -> {
-                Locations(screenState = screenState,
-                    {
-                        navController.navigate("Forecast/${it.latitude}/${it.longitude}")
-                    }, viewModel::addCity
+                Locations(
+                    screenState,
+                    navController::navigate,
+                    viewModel::addCity
                 )
             }
         }
@@ -94,7 +93,7 @@ fun LocationsScreen(
 @Composable
 fun Locations(
     screenState: LocationsScreenState.Loaded,
-    onLocationClick: (LocationModel) -> Unit,
+    onLocationClick: (String) -> Unit,
     addLocationListener: (String) -> Unit
 ) {
     var city by remember { mutableStateOf("") }
@@ -129,11 +128,16 @@ fun Locations(
 }
 
 @Composable
-fun LocationItem(location: LocationModel, onLocationClick: (LocationModel) -> Unit) {
+fun LocationItem(location: LocationModel, onLocationClick: (String) -> Unit) {
     Card(
         modifier = Modifier
             .clickable {
-                onLocationClick.invoke(location)
+                onLocationClick.invoke(
+                    Destination.Forecast.withParams(
+                        location.latitude,
+                        location.longitude
+                    )
+                )
             }
             .padding(8.dp)
             .border(

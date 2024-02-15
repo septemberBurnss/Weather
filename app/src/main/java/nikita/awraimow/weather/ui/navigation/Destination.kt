@@ -6,6 +6,12 @@ sealed class Destination(open val route: String) {
         data object ForecastDetails: Destination("ForecastDetails/{date}")
 }
 
-fun Destination.withParam(param: Long): String {
+//fixme
+fun Destination.ForecastDetails.withParam(param: Long): String {
     return route.substringBefore("/").plus("/").plus(param)
+}
+
+//fixme
+fun Destination.Forecast.withParams(param1: Double, param2: Double): String {
+    return route.substringBefore("/").plus("/").plus(param1).plus("/").plus(param2)
 }
