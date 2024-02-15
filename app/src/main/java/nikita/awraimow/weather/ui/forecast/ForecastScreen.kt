@@ -2,14 +2,19 @@ package nikita.awraimow.weather.ui.forecast
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
@@ -22,6 +27,7 @@ import androidx.navigation.NavController
 import nikita.awraimow.weather.R
 import nikita.awraimow.weather.ui.navigation.Destination
 import nikita.awraimow.weather.ui.navigation.withParam
+import nikita.awraimow.weather.ui.theme.WeatherTheme
 
 @Composable
 fun ForecastScreen(
@@ -31,24 +37,48 @@ fun ForecastScreen(
     longitude: Double
 ) {
     val state = viewModel.uiState.collectAsState().value
-    Column {
-        if (state is ForecastScreenState.Loaded) {
-            Text(
-                textAlign = TextAlign.Center,
-                text = state.forecast.title,
-                style = TextStyle(fontSize = 32.sp, fontWeight = FontWeight.Bold),
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(16.dp)
-            )
-            for (item in state.forecast.days) {
-                DailyForecastItem(item = item) {
-                    navController.navigate(Destination.ForecastDetails.withParam(item.date))
+    LaunchedEffect(key1 = latitude, key2 = longitude) {
+        viewModel.getForecast(latitude, longitude)
+    }
+    WeatherTheme {
+        when {
+            state is ForecastScreenState.Loading -> {
+                Box(Modifier.fillMaxSize()) {
+                    CircularProgressIndicator(
+                        modifier = Modifier.align(Alignment.Center)
+                    )
+                }
+            }
+
+            state is ForecastScreenState.Loaded -> {
+                Loaded(state = state) {
+                    navController.navigate(Destination.ForecastDetails.withParam(it))
                 }
             }
         }
     }
-    viewModel.getForecast(latitude, longitude)
+}
+
+@Composable
+fun Loaded(
+    state: ForecastScreenState.Loaded,
+    onDaySelected: (Long) -> Unit
+) {
+    Column {
+        Text(
+            textAlign = TextAlign.Center,
+            text = state.forecast.title,
+            style = TextStyle(fontSize = 32.sp, fontWeight = FontWeight.Bold),
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(16.dp)
+        )
+        for (item in state.forecast.days) {
+            DailyForecastItem(item = item) {
+                onDaySelected(item.date)
+            }
+        }
+    }
 }
 
 @Composable

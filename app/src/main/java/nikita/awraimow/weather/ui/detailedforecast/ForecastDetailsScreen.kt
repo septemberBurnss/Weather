@@ -1,13 +1,17 @@
 package nikita.awraimow.weather.ui.detailedforecast
 
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -21,20 +25,28 @@ import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import nikita.awraimow.weather.R
 import nikita.awraimow.weather.ui.forecast.DayForecastUiModel
+import nikita.awraimow.weather.ui.theme.WeatherTheme
 
 @Composable
 fun DetailedForecastScreen(
     date: Long,
     viewModel: ForecastDetailsViewModel
 ) {
-
-    val state = viewModel.uiState.collectAsState().value
-
-    if (state is ForecastDetailsScreenState.Loaded) {
-        Loaded(state.forecast)
+    LaunchedEffect(key1 = date) {
+        viewModel.getForecast(date)
     }
-
-    viewModel.getForecast(date)
+    val state = viewModel.uiState.collectAsState().value
+    WeatherTheme {
+        if (state is ForecastDetailsScreenState.Loaded) {
+            Loaded(state.forecast)
+        } else {
+            Box(Modifier.fillMaxSize()) {
+                CircularProgressIndicator(
+                    modifier = Modifier.align(Alignment.Center)
+                )
+            }
+        }
+    }
 }
 
 @Composable
@@ -42,7 +54,7 @@ fun Loaded(forecast: DayForecastUiModel) {
     Column {
         Text(
             textAlign = TextAlign.Center,
-            text = "Warsaw",
+            text = forecast.title,
             style = TextStyle(fontSize = 32.sp, fontWeight = FontWeight.Bold),
             modifier = Modifier
                 .fillMaxWidth()
@@ -50,7 +62,7 @@ fun Loaded(forecast: DayForecastUiModel) {
         )
         Text(
             textAlign = TextAlign.Center,
-            text = forecast.dayName,
+            text = "${forecast.dayName}, ${forecast.dateSuffix}",
             style = TextStyle(fontSize = 18.sp, fontWeight = FontWeight.SemiBold),
             modifier = Modifier
                 .fillMaxWidth()

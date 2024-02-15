@@ -3,6 +3,7 @@ package nikita.awraimow.weather.ui.forecast
 import nikita.awraimow.weather.data.forecast.ForecastResponseModel
 import java.util.Calendar
 import java.util.Date
+import java.util.Locale
 import javax.inject.Inject
 import javax.inject.Singleton
 import kotlin.math.roundToInt
@@ -17,6 +18,8 @@ class ForecastResponseMapper @Inject constructor(
         val days = model.list.map { dayResponse ->
             calendar.time = Date(dayResponse.dt * 1000) // epoch
             val dayName = getWeekDay(calendar.get(Calendar.DAY_OF_WEEK))
+            val monthSuffix = calendar.getDisplayName(Calendar.MONTH, Calendar.LONG, Locale.ENGLISH)
+            val daySuffix = calendar.get(Calendar.DAY_OF_MONTH)
 
             calendar.time = Date(dayResponse.sunrise * 1000)
             val sunrise = "${calendar.get(Calendar.HOUR_OF_DAY)}:${calendar.get(Calendar.MINUTE)}"
@@ -24,8 +27,10 @@ class ForecastResponseMapper @Inject constructor(
             val sunset = "${calendar.get(Calendar.HOUR_OF_DAY)}:${calendar.get(Calendar.MINUTE)}"
 
             DayForecastUiModel(
+                title = model.city.name,
                 date = dayResponse.dt,
                 dayName = dayName,
+                dateSuffix = "$monthSuffix $daySuffix",
                 weatherType = 0, // TODO
                 temperature = dayResponse.temp.day.roundToInt(),
                 minTemperature = dayResponse.temp.min.toInt(),

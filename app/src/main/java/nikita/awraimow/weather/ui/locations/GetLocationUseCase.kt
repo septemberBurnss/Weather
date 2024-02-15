@@ -5,12 +5,12 @@ import javax.inject.Inject
 import javax.inject.Singleton
 
 @Singleton
-class AddLocationUseCase @Inject constructor(
+class GetLocationUseCase @Inject constructor(
     private val geoService: GeoService,
-    private val locationMapper: LocationMapper
+    private val locationMapper: LocationMapper,
 ) {
 
-    suspend fun addLocation(cityName: String): LocationModel {
+    suspend fun getLocation(cityName: String): LocationModel {
         return locationMapper.mapLocation(
             geoService.getLocations(cityName).first()
         )

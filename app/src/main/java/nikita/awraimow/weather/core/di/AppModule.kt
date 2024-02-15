@@ -1,5 +1,6 @@
 package nikita.awraimow.weather.core.di
 
+import com.google.gson.Gson
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -19,6 +20,12 @@ class AppModule {
     @Singleton
     fun provideCalendar(): Calendar {
         return Calendar.getInstance()
+    }
+
+    @Provides
+    @Singleton
+    fun provideGson(): Gson {
+        return Gson()
     }
 
     @Provides
