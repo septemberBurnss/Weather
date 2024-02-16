@@ -8,14 +8,14 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+import nikita.awraimow.weather.AddLocationUseCase
 import nikita.awraimow.weather.GetLocationUseCase
-import nikita.awraimow.weather.data.LocationsRepository
 import javax.inject.Inject
 
 @HiltViewModel
 class LocationsViewModel @Inject constructor(
     private val getLocationUseCase: GetLocationUseCase,
-    private val locationsRepository: LocationsRepository
+    private val addLocationUseCase: AddLocationUseCase
 ) : ViewModel() {
 
     private val _uiState = MutableStateFlow<LocationsScreenState>(LocationsScreenState.Loading)
@@ -24,7 +24,7 @@ class LocationsViewModel @Inject constructor(
     fun loadSavedLocations() {
         viewModelScope.launch {
             withContext(Dispatchers.IO) {
-                val locations = locationsRepository.getSavedLocations()
+                val locations = getLocationUseCase.getSavedLocations()
                 if (locations.isEmpty()) {
                     _uiState.emit(LocationsScreenState.NoLocations)
                 } else {
@@ -37,8 +37,7 @@ class LocationsViewModel @Inject constructor(
     fun addCity(cityName: String) {
         viewModelScope.launch {
             withContext(Dispatchers.IO) {
-                val location = getLocationUseCase.getLocation(cityName)
-                locationsRepository.addLocation(location)
+                addLocationUseCase.addLocation(cityName)
                 loadSavedLocations()
             }
         }

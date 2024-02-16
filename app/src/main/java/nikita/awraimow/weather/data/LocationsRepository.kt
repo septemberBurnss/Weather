@@ -10,7 +10,7 @@ class LocationsRepository @Inject constructor(
     private val locationPreferences: LocationPrefsWrapper
 ) {
 
-    suspend fun addLocation(location: LocationModel) {
+    fun addLocation(location: LocationModel) {
         locationPreferences.saveLocation(location)
     }
 
